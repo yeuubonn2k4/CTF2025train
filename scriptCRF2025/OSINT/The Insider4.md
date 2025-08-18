@@ -1,4 +1,4 @@
-> Hello everyone, I am lynchee, a member of Cybersecurity in Posts and Telecommunications Institute of Technology (PTIT), Viet Nam. Above is my writeup for challenge "The Insider4":
+> Hello everyone, I am lynchee, a member of SECJOTA, a team of Cybersecurity in Posts and Telecommunications Institute of Technology (PTIT), Viet Nam. Above is my writeup for challenge "The Insider4":
 
 ## CHALLENGE DESCRIPTION:
 
