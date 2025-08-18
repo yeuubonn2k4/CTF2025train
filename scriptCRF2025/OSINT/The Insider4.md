@@ -8,9 +8,7 @@
 
 - Based on previous challenges, I found NoobMaster999's github:
 
-`
 https://github.com/scriptCTF/scriptCTF26/tree/main/OSINT/.insider-4/attachments
-`
 
 2 pictures in challenge:
 
@@ -20,7 +18,7 @@ https://github.com/scriptCTF/scriptCTF26/tree/main/OSINT/.insider-4/attachments
 
 and have a description: `"As a photographer, I took these photos on my vacation. Flag format is scriptCTF{HOTEL_ADDRESS_ROOMNUMBER}. Example: scriptCTF{1337_elite_Hwy_S_9999} Have fun!"`
 
-- In commit ".secret": *as a photographer, i add comments/descriptions to my images*. I thought of using exiftool to see comments/ description in this images and I have the following data after exiftool:
+- In commit ".secret": *as a photographer, i add comments/descriptions to my images*. I thought of using `exiftool` to see comments/ description in this images and I have the following data after `exiftool`:
 
 ```
 ExifTool Version Number         : 12.76
@@ -87,6 +85,10 @@ Megapixels                      : 12.2
 
 <img width="1259" height="816" alt="image" src="https://github.com/user-attachments/assets/da7c2408-0f69-4d26-aab2-e39b6952ad66" />
 
-- I determined that part of the flag is scriptCTF{901_Hwy_35_N according to the format of the problem. Now I need to find the room number where the photographer took the photo. Looking at the second photo, I see that the photo was taken from the middle building of the three buildings. Searching google about this hotel, I found that the hotel has 48 rooms and 2 floors. From the angle, I guess the photo was taken from the 1st floor and in one of the two rooms in the middle of the 1st floor. 2 floors 48 rooms so 1 floor will have about 24 rooms, and 2 middle rooms will be about 11,12.According to the information I searched, hotels are usually numbered from 100 onwards. So I tried entering 111 or 112. Luckily when I filled in `scriptCTF{901_Hwy_35_N_111}` it came out Correctly, I am extremely proud that my mathematical logic thinking was correct in this challenge. Thank you for reading my writeup. 
+- I determined that part of the flag is scriptCTF{901_Hwy_35_N according to the format of the problem. Now I need to find the room number where the photographer took the photo. Looking at the second photo, I see that the photo was taken from the middle building of the three buildings.
+
+- Searching google about this hotel, I found that the hotel has 48 rooms and 2 floors. From the angle, I guess the photo was taken from the 1st floor and in one of the two rooms in the middle of the 1st floor. 2 floors 48 rooms so 1 floor will have about 24 rooms, and 2 middle rooms will be about 11,12.According to the information I searched, hotels are usually numbered from 100 onwards. So I tried entering 111 or 112. Luckily when I filled in `scriptCTF{901_Hwy_35_N_111}` it came out Correctly, I am extremely proud that my mathematical logic thinking was correct in this challenge.
+
+- ***Thank you for reading my writeup.***
 
 
