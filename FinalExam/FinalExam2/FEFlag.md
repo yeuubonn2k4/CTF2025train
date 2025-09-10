@@ -138,6 +138,35 @@ INSERT INTO `note` VALUES (NULL, 23, 4, ''||(SELECT 'BC_abcabcxyzxyz')||'', CURR
 = Khi trích xuất flag ta được:
 <img width="630" height="638" alt="image" src="https://github.com/user-attachments/assets/170f60ed-cb0a-4a95-9db5-52041e200e88" />
 
+***Flag5: Khai thác Lỗ hổng Command Injection trong chức năng Export sẽ giúp bạn lấy được FLAG cuối cùng. Hãy tìm cách đọc file /flag.txt***
+
+= Thử nhập 1 `Submit Vulnerability` có `Proof of Concept` là:
+
+<img width="564" height="332" alt="image" src="https://github.com/user-attachments/assets/fd2f4f67-6432-4958-bcf5-16a52b6b7e49" />
+
+= Ấn Export thì thấy với file txt đã bị xóa mất `` và pdf thì mã hóa --la` biến thành comment.
+<img width="634" height="225" alt="image" src="https://github.com/user-attachments/assets/74aee0ad-b031-46a9-8f7c-327f248c7d62" />
+
+= Sửa thành ``ls -la`` vẫn bị mã hóa:
+<img width="705" height="265" alt="image" src="https://github.com/user-attachments/assets/7ffbac5b-37b9-4677-8f48-ccb804581ccf" />
+
+=> Nghĩa là cứ ` trong txt thì bị xóa, còn pdf thì dấu space thành -
+
+= Chèn payload `<link rel="attachment" href="file:///flag.txt">` vào Note:
+<img width="1805" height="882" alt="image" src="https://github.com/user-attachments/assets/70e858b0-3b7c-424d-a6d0-45fbedd4d36a" />
+
+= Export ra file không bị thay đổi tên nhưng ta đã nhúng payload kia vào rồi:
+<img width="786" height="310" alt="image" src="https://github.com/user-attachments/assets/38e1ff37-c161-4aeb-bcbb-d6743e48f79a" />
+
+= Dùng `pdfdetach` để gỡ flag.txt ra:
+<img width="563" height="285" alt="image" src="https://github.com/user-attachments/assets/e3de1168-f221-45e5-a471-0f3e42084220" />
+
+= Flag là
+
+`CHH{COMmaNd_InJeCTIOn_pdF_d020dc87bcd5ccb1eaf6c673eeef2d32}`
+
+
+
 
 
 
