@@ -50,3 +50,14 @@ Bắt đầu vào trang Github kiểm tra:
 <img width="868" height="591" alt="image" src="https://github.com/user-attachments/assets/dec4917e-c592-4fa6-b33d-1e3d8b11d964" />
 
 <img width="851" height="678" alt="image" src="https://github.com/user-attachments/assets/4ad64d98-c6d3-404e-a883-5a575010889a" />
+
+- Tool liệt kê các username trong ở các trang web: blackbird
+https://github.com/p1ngul1n0/blackbird
+
+```
+python blackbird.py --username solo_levelling
+```
+<img width="1327" height="903" alt="image" src="https://github.com/user-attachments/assets/aecf8706-4d4c-4079-bea3-f18b8151e180" />
+
+
+
